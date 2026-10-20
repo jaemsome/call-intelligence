@@ -1,0 +1,22 @@
+import type { Scorecard } from './types'
+
+export const RETENTION_12: Scorecard = {
+  kind: 'retention_12',
+  title: 'Retention Call Scorecard',
+  maxScore: 12,
+  thresholds: { gold: 12, green: 11 },
+  items: [
+    { key: 'validate_confidence', quadrant: 'validation', label: 'Validate & Confidence', definition: 'Validates the customer and assures help WITHOUT confirming the cancellation.', hitWhen: 'Rep says they can take a look/help and does not say “yes I can cancel that”.', examples: ['Got it. Thank you for calling in, I can absolutely take a look at things for you.'] },
+    { key: 'transition', quadrant: 'validation', label: 'Transition Statement', definition: 'Moves into gathering account information.', hitWhen: 'Rep asks for the address/info and says they will take a quick look.', examples: ['What’s the address for the account? Awesome. Let me just take a quick look here.'] },
+    { key: 'research', quadrant: 'validation', label: 'Do Your Research', definition: 'Uses account history (tenure, contract, re-services, last service) in the conversation.', hitWhen: 'Rep references something from the account (how long they’ve been a customer, last service, contract).', examples: ['I see here you’ve been a customer for over 3 years, thank you!'] },
+    { key: 'investigate', quadrant: 'understand', label: 'Investigate', definition: 'Asks open-ended questions to find the root reason for cancelling — not too many.', hitWhen: 'Rep asks why / how the service has been.', examples: ['If you don’t mind, what’s the reason you’re unhappy with the service?'] },
+    { key: 'validate_summary', quadrant: 'understand', label: 'Validate & Summary', definition: 'Validates again and repeats back the root cause.', hitWhen: 'Rep summarises the reason back (“So the service has been great, you’re just looking for a cheaper option?”).', examples: ['Got it, that makes sense. So overall the service has been pretty good, but just the last couple months you’ve been noticing more ants than normal?'] },
+    { key: 'validate_expectation', quadrant: 'understand', label: 'Validate & Expectation', definition: 'Stays on their team and previews offering options.', hitWhen: 'Rep says they want to make it right and will offer a couple of options.', examples: ['Since we are a small family-owned company, we truly value you as a customer and I want to make this right for you. Let me give a couple of suggestions…'] },
+    { key: 'present_solution', quadrant: 'solve', label: 'Present Solution', definition: 'Offers a tailored save from the solution bank (free re-service, back-to-back, custom plan, waive payment, set tech/day, hold, manager visit, 10% drop).', hitWhen: 'Rep makes a concrete save offer tied to the customer’s reason.', examples: ['What I can do is, I’ll send out my head technician to come do a free re-service for you.'] },
+    { key: 'consensus', quadrant: 'solve', label: 'Consensus', definition: 'Asks for buy-in on the offer.', hitWhen: 'Rep asks “does that work / how does that sound?”.', examples: ['Does that work for you?'] },
+    { key: 'repeat', quadrant: 'solve', label: 'Repeat (when necessary)', definition: 'If the first offer is declined, asks more questions and offers another solution (contract fee script if applicable).', hitWhen: 'After a decline, rep digs deeper and offers a different solution.', examples: ['I understand. The reason I was offering those different options is because you’re still within the initial 12 month period…'], naRule: 'first_offer_accepted' },
+    { key: 'conclusion', quadrant: 'verify', label: 'Provide a Conclusion', definition: 'Wraps up with clear next steps and records.', hitWhen: 'Rep confirms what happens next (re-service date, cancellation effective, fee waived).', examples: ['Your technician will be there tomorrow and I’ve noted everything on your account.'] },
+    { key: 'thank', quadrant: 'verify', label: 'Thank the Customer', definition: 'Genuinely thanks the customer.', hitWhen: 'Rep thanks them for being a customer.', examples: ['I just want to thank you for calling in and working with me today.'] },
+    { key: 'teaser', quadrant: 'verify', label: 'Leave a Teaser', definition: 'For cancels: leaves an incentive to come back (e.g. free initial service noted on account).', hitWhen: 'Rep offers a come-back incentive when the customer still cancels.', examples: ['If you ever want to try us again… I’m going to give you a FREE initial service. I’ll put that in the notes in your account.'], naRule: 'customer_saved' },
+  ],
+}
