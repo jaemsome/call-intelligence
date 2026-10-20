@@ -65,6 +65,7 @@ export function useUpload() {
     let callId: string | undefined
     try {
       const created = await post('/api/calls/upload-url', { fileName: file.name, contentType: check.contentType, size: file.size })
+      if (created.status === 429) throw new Error('Upload limit reached (2 calls per minute). Please wait a minute and try again.')
       if (!created.ok) throw new Error(created.json.error ?? 'Something went wrong')
       const { signedUrl } = created.json as { callId: string; signedUrl: string }
       callId = created.json.callId as string

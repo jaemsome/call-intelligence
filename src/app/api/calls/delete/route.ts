@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { guard, methodNotAllowed, readJson } from '@/lib/apiGuard'
-import { getUploadLimiter } from '@/lib/ratelimit'
+import { getDeleteLimiter } from '@/lib/ratelimit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { RECORDINGS_BUCKET } from '@/lib/env'
 
@@ -9,7 +9,7 @@ export const GET = methodNotAllowed
 const Body = z.object({ callId: z.string().uuid() })
 
 export async function POST(request: Request) {
-  const g = await guard(request, getUploadLimiter())
+  const g = await guard(request, getDeleteLimiter())
   if (!g.ok) return g.response
   const body = await readJson(request, Body, 500)
   if (!body.ok) return body.response
