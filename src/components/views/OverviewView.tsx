@@ -1,8 +1,7 @@
-import Link from 'next/link'
-import { PhoneCall, Upload } from 'lucide-react'
+import { PhoneCall } from 'lucide-react'
 import { PageHeader } from '@/components/shell/PageHeader'
-import { buttonClasses } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
+import { UploadCallButton } from '@/components/calls/UploadCallButton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { StatTile } from '@/components/ui/StatTile'
 import { LeakCard } from '@/components/calls/LeakCard'
@@ -15,7 +14,7 @@ const show = (v: number | null) => (v == null ? '—' : `${v}%`)
 
 export function OverviewView({ insights, attention, processing, total }: OverviewData) {
   const { kpis, leaks } = insights
-  const upload = <Link href="/calls/log?upload=1" className={buttonClasses('primary')}><Upload className="size-4" aria-hidden />Upload call</Link>
+  const upload = <UploadCallButton />
   if (total === 0) {
     return (
       <>

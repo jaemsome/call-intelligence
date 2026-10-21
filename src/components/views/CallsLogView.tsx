@@ -1,14 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { PhoneCall, Upload } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { PhoneCall } from 'lucide-react'
 import { PageHeader } from '@/components/shell/PageHeader'
-import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { CallFilters } from '@/components/calls/CallFilters'
 import { CallsTable } from '@/components/calls/CallsTable'
-import { UploadDrawer } from '@/components/calls/UploadDrawer'
+import { UploadCallButton } from '@/components/calls/UploadCallButton'
 import { useCallStatus } from '@/hooks/useCallStatus'
 import { isProcessing } from '@/lib/labels'
 import type { CallsLogData } from '@/lib/data/calls'
@@ -16,20 +15,16 @@ import { plural } from '@/lib/utils'
 
 export function CallsLogView({ calls, total, reps, filters }: CallsLogData) {
   const router = useRouter()
-  const params = useSearchParams()
-  const [uploadOpen, setUploadOpen] = useState(params.get('upload') === '1')
   const processingIds = calls.filter((c) => isProcessing(c.status)).map((c) => c.id)
   const live = useCallStatus(processingIds, () => router.refresh())
 
   const [pending, setPending] = useState(false)
 
-  const upload = <Button onClick={() => setUploadOpen(true)}><Upload className="size-4" aria-hidden />Upload call</Button>
-
   return (
     <>
-      <PageHeader title="Calls" subtitle={`${plural(calls.length, 'call')}${calls.length !== total ? ` of ${total}` : ''}`} actions={upload} />
+      <PageHeader title="Calls" subtitle={`${plural(calls.length, 'call')}${calls.length !== total ? ` of ${total}` : ''}`} actions={total === 0 ? undefined : <UploadCallButton />} />
       {total === 0 ? (
-        <EmptyState icon={PhoneCall} title="No calls yet" text="Upload a recording and we'll transcribe it, score it against your scorecard and tell you what to coach." action={upload} />
+        <EmptyState icon={PhoneCall} title="No calls yet" text="Upload a recording and we'll transcribe it, score it against your scorecard and tell you what to coach." action={<UploadCallButton />} />
       ) : (
         <>
           <CallFilters filters={filters} reps={reps} onPendingChange={setPending} />
@@ -38,7 +33,6 @@ export function CallsLogView({ calls, total, reps, filters }: CallsLogData) {
           </div>
         </>
       )}
-      <UploadDrawer open={uploadOpen} onClose={() => setUploadOpen(false)} />
     </>
   )
 }
